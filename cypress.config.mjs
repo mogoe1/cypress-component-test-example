@@ -6,6 +6,11 @@ export default defineConfig({
         devServer: async (cypressConfig) => {
             const app = express();
 
+            app.get('/*.html', (req, res) => {
+                console.log('Express got request for file: ', req.url);
+                res.send('<html>Hello from express!</html>')
+            });
+
             app.get('/*.js', (req, res) => {
                 console.log('Express got request for js file: ', req.url);
                 res
