@@ -6,9 +6,13 @@ export default defineConfig({
         devServer: async (cypressConfig) => {
             const app = express();
 
-            app.get('/*', (req, res) => {
-                console.log('Express got request for: ', req.url);
-                res.send('Hello from express');
+            app.get('/*.html', (req, res) => {
+                console.log('Express got request for html file: ', req.url);
+                res.send('<html>Hi from express!</html>');
+            });
+
+            app.get('/*.js', (req, res) => {
+                console.log('Express got request for js file: ', req.url);
             });
 
             const server = await app.listen(3000);
