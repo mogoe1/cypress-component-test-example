@@ -6,16 +6,20 @@ export default defineConfig({
         devServer: async (cypressConfig) => {
             const app = express();
 
-            app.get('/*.html', (req, res) => {
-                console.log('Express got request for file: ', req.url);
-                res.send('<html>Hello from express!</html>')
-            });
+            app.use(express.static('./'));
 
-            app.get('/*.js', (req, res) => {
-                console.log('Express got request for js file: ', req.url);
-                res
-                    .contentType('text/javascript')
-                    .send('it("should run",() => expect(true).to.be.true)')
+            app.get('/__cypress/*index.html', (req, res) => {
+                res.send(`<!DOCTYPE html>
+                <html>
+                  <body>
+                    <script type="module">
+                      const CypressInstance = (window.Cypress = parent.Cypress)
+                      const importsToLoad = [() => import("/" + CypressInstance.spec.relative)]
+                      CypressInstance.onSpecWindow(window, importsToLoad)
+                      CypressInstance.action('app:window:before:load', window)
+                    </script>
+                  </body>
+                </html>`)
             });
 
             const server = await app.listen(3000);
@@ -26,5 +30,6 @@ export default defineConfig({
             };
         },
         supportFile: false,
+        video: false,
     }
 })

@@ -1,7 +1,9 @@
 {
   "name": "cypress-component-test-example",
   "scripts": {
-    "test": "cypress run --component"
+    "test": "npm run cypress:run",
+    "cypress:run": "cypress run --component",
+    "cypress:open": "cypress open"
   },
   "devDependencies": {
     "cypress": "^10.3.0",
